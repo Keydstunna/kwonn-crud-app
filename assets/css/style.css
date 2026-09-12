@@ -1,0 +1,237 @@
+/* ===================================================================
+   STYLE.CSS — Isang stylesheet na "sinusunod" ng lahat ng pages
+   -------------------------------------------------------------------
+   Design direction: "Barangay Masipit, pagkatapos ng ulan" — malamig,
+   berdeng-tubig na umaga, may fog sa bundok. Dalawang accent palette:
+     - Estuary  (Clean-Up Drive)   -> teal / seafoam / sand
+     - Canopy   (Tree Planting)    -> moss / bark / lichen-gold
+   Ang bawat page ay naglalagay ng class sa <body> (theme-estuary /
+   theme-canopy / wala) para mapalitan ang --accent variables sa ibaba.
+   =================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* ---- base (neutral, ginagamit kahit saang page) ---- */
+    --ink:        #16261E;
+    --ink-soft:   #3C4E44;
+    --mist:       #EFF4EF;   /* pangunahing background — hindi pure white */
+    --paper:      #FBFDFB;   /* card surfaces */
+    --line:       rgba(22, 38, 30, 0.12);
+
+    /* ---- default accent = "Estuary" (Clean-Up Drive) ---- */
+    --accent-deep:  #0E4C46;
+    --accent-mid:   #2E8C7D;
+    --accent-light: #8FE3D3;
+    --accent-warm:  #E8DCC6;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 28px;
+
+    --shadow-soft: 0 12px 32px rgba(14, 76, 70, 0.14);
+}
+
+/* "Canopy" theme override — Tree Planting pages */
+body.theme-canopy {
+    --accent-deep:  #33512B;
+    --accent-mid:   #6B8E4E;
+    --accent-light: #C9A64C;
+    --accent-warm:  #EFE6CF;
+    --shadow-soft: 0 12px 32px rgba(51, 81, 43, 0.16);
+}
+
+/* Admin uses a quieter slate-green so it reads as "backstage", not an event */
+body.theme-admin {
+    --accent-deep:  #1F3A34;
+    --accent-mid:   #3E5C54;
+    --accent-light: #9FB8AE;
+    --accent-warm:  #E4E9E4;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--mist);
+    line-height: 1.5;
+}
+
+h1, h2, h3, .display {
+    font-family: var(--font-display);
+    color: var(--accent-deep);
+    line-height: 1.15;
+    margin: 0 0 0.4em;
+    font-weight: 600;
+}
+
+a { color: var(--accent-deep); }
+
+p { max-width: 62ch; }
+
+/* -------------------------------------------------------------
+   Reusable gradient surfaces
+   ------------------------------------------------------------- */
+.gradient-surface {
+    background: linear-gradient(155deg, var(--accent-deep) 0%, var(--accent-mid) 62%, var(--accent-light) 100%);
+    color: var(--paper);
+}
+
+.gradient-text {
+    background: linear-gradient(100deg, var(--accent-deep), var(--accent-mid) 55%, var(--accent-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75em 1.5em;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+    background: linear-gradient(120deg, var(--accent-deep), var(--accent-mid));
+    color: var(--paper);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--accent-deep);
+    border: 1.5px solid var(--line);
+}
+.btn-ghost:hover { border-color: var(--accent-mid); }
+
+.btn-danger {
+    background: #A6402F;
+    color: #FBFDFB;
+}
+
+.card {
+    background: var(--paper);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-soft);
+    padding: 1.75rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
+    margin-bottom: 1rem;
+}
+.field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+}
+.field input,
+.field textarea,
+.field select {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.65em 0.85em;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--line);
+    background: var(--mist);
+    color: var(--ink);
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+    outline: 2px solid var(--accent-mid);
+    outline-offset: 1px;
+    background: var(--paper);
+}
+.field.invalid input { border-color: #A6402F; animation: shake 0.3s; }
+@keyframes shake {
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+/* -------------------------------------------------------------
+   Top navigation, ginagamit sa protected pages
+   ------------------------------------------------------------- */
+.topnav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.75rem;
+    background: rgba(251, 253, 251, 0.86);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    transition: box-shadow 0.2s ease;
+}
+.topnav.is-scrolled { box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+.topnav .brand {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--accent-deep);
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+.topnav nav { display: flex; gap: 1.25rem; align-items: center; }
+.topnav nav a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    font-weight: 500;
+}
+.topnav nav a:hover { color: var(--accent-deep); }
+
+.page-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2.5rem 1.75rem 4rem;
+}
+
+.notice {
+    border-radius: var(--radius-sm);
+    padding: 0.85em 1.1em;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+    border: 1px solid;
+}
+.notice.warn  { background: #FBF2E9; border-color: #D8A657; color: #6B4A1A; }
+.notice.error { background: #FBEAE7; border-color: #D8836F; color: #7A2A1B; }
+.notice.ok    { background: #EAF6EF; border-color: #6FBF9B; color: #17513C; }
+
+/* particle canvas sits behind hero content */
+.leaf-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+@media (max-width: 720px) {
+    .page-shell { padding: 1.5rem 1.1rem 3rem; }
+    .topnav { padding: 0.75rem 1.1rem; }
+    .topnav nav { gap: 0.85rem; }
+}
